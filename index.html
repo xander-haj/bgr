@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Primary Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Background Removal</title>
+
+  <!-- Video.js CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/video.js@7.20.3/dist/video-js.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Dark/Light Theme Fallback -->
+  <script>
+    (function() {
+      // Quick check for saved theme in localStorage
+      let savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark-theme');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <!-- Header and Title -->
+  <header class="header">
+    <h1 class="site-title">Real-Time Background Removal</h1>
+    <!-- Dark/Light Mode Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" id="icon-sun" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sun Icon -->
+        <path
+          d="M256 128c-70.58 0-128 57.42-128 128s57.42 128 128 128 128-57.42 128-128-57.42-128-128-128zm0 234.67A106.67 106.67 0 1 1 362.67 256 106.67 106.67 0 0 1 256 362.67zM256 85.33a21.33 21.33 0 0 0 21.33-21.33V21.33a21.33 21.33 0 1 0-42.66 0v42.67A21.33 21.33 0 0 0 256 85.33zm0 341.34a21.33 21.33 0 0 0-21.33 21.33v42.67a21.33 21.33 0 1 0 42.66 0v-42.67A21.33 21.33 0 0 0 256 426.67zM426.67 256a21.33 21.33 0 0 0 21.33-21.33v-42.67a21.33 21.33 0 1 0-42.67 0v42.67A21.33 21.33 0 0 0 426.67 256zM85.33 256a21.33 21.33 0 0 0 21.33-21.33v-42.67a21.33 21.33 0 1 0-42.66 0v42.67A21.33 21.33 0 0 0 85.33 256zM380.63 131.37a21.33 21.33 0 0 0 30.17-30.17l-30.17-30.17a21.33 21.33 0 0 0-30.17 30.17zM131.37 380.63a21.33 21.33 0 0 0-30.17 30.17l30.17 30.17a21.33 21.33 0 0 0 30.17-30.17zM131.37 101.2a21.33 21.33 0 0 0 0-30.17l-30.17-30.17a21.33 21.33 0 0 0-30.17 30.17l30.17 30.17a21.33 21.33 0 0 0 30.17 0zM380.63 410.8a21.33 21.33 0 0 0 30.17 0l30.17-30.17a21.33 21.33 0 0 0-30.17-30.17l-30.17 30.17a21.33 21.33 0 0 0 0 30.17z"
+        />
+      </svg>
+
+      <svg class="icon-moon hide" id="icon-moon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <!-- Moon Icon -->
+        <path
+          d="M279.135 512c-69.653 0-134.328-27.125-183.218-76.482-49.086-49.359-76.121-114.026-75.901-183.648.204-71.716 28.848-139.222 79.552-189.927 5.921-5.914 15.384-5.942 21.299-.056 5.914 5.914 5.944 15.379.056 21.299-45.696 45.745-71.046 106.502-71.227 171.252-.171 60.299 23.18 116.965 66.069 159.854 42.794 42.788 99.457 66.146 159.694 66.146 64.801 0 125.579-25.369 171.327-71.096 5.921-5.914 15.385-5.942 21.299-.056 5.914 5.914 5.944 15.379.056 21.299-50.666 50.729-118.175 79.4-189.881 79.4z"
+        />
+      </svg>
+    </button>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- Video.js Player -->
+    <div class="video-container">
+      <video
+        id="camera-feed"
+        class="video-js vjs-default-skin"
+        autoplay
+        playsinline
+        muted
+      ></video>
+      <!-- Floating Controls Over Video -->
+      <div class="floating-controls">
+        <button id="play-pause" class="float-btn" aria-label="Play/Pause">▶️/⏸</button>
+        <button id="stop-video" class="float-btn" aria-label="Stop Video">⏹</button>
+        <button id="cut-video" class="float-btn" aria-label="Cut Video">✂️</button>
+        <button id="trim-video" class="float-btn" aria-label="Trim Video">🔪</button>
+      </div>
+    </div>
+
+    <!-- Canvas Output -->
+    <div class="canvas-container">
+      <canvas id="output-canvas" width="640" height="480"></canvas>
+    </div>
+
+    <!-- Controls & Settings Panel -->
+    <section class="controls-panel">
+      <!-- Camera Selection & Resolution -->
+      <div class="camera-select">
+        <label for="camera-options">Camera:</label>
+        <select id="camera-options"></select>
+      </div>
+      <div class="resolution-select">
+        <label for="resolution-options">Resolution:</label>
+        <select id="resolution-options">
+          <option value="640x480">640 x 480</option>
+          <option value="1280x720">1280 x 720</option>
+          <option value="1920x1080">1920 x 1080</option>
+        </select>
+      </div>
+
+      <!-- Performance Settings -->
+      <div class="performance-settings">
+        <label for="frame-skip">Frame Skip (Performance):</label>
+        <input type="range" id="frame-skip" min="0" max="10" value="0" />
+      </div>
+
+      <!-- Chroma Key Removal -->
+      <div class="chroma-section">
+        <button id="chroma-remove" class="action-btn">Chroma Key Removal</button>
+        <label for="chroma-color">Chroma Color:</label>
+        <input type="color" id="chroma-color" value="#00ff00" />
+      </div>
+
+      <!-- AI Removal -->
+      <button id="ai-remove" class="action-btn">AI-Based Removal</button>
+
+      <!-- Custom Background -->
+      <div class="background-section">
+        <label for="background-upload">Custom BG:</label>
+        <input type="file" id="background-upload" accept="image/*,video/*" />
+        <button id="apply-background" class="action-btn">Apply BG</button>
+      </div>
+
+      <!-- Export Video -->
+      <button id="export-video" class="action-btn export-btn">Export Video</button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Real-Time Background Removal. All rights reserved.</p>
+  </footer>
+
+  <!-- Video.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/video.js@7.20.3/dist/video.min.js"></script>
+  <!-- OpenCV.js CDN -->
+  <script src="https://docs.opencv.org/4.x/opencv.js" async></script>
+  <!-- Main JS -->
+  <script src="script.js"></script>
+</body>
+</html>
