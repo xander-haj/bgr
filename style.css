@@ -1,0 +1,270 @@
+/* Global Reset and Basic Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body & Basic Layout */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.4;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark Theme */
+.dark-theme {
+  background-color: #141414;
+  color: #eee;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+}
+.dark-theme .header {
+  background-color: #202020;
+  border-color: #333;
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.theme-toggle svg {
+  width: 30px;
+  height: 30px;
+  fill: #333;
+  transition: transform 0.3s ease, opacity 0.3s ease, fill 0.3s ease;
+}
+
+.dark-theme .theme-toggle svg {
+  fill: #eee;
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: rotate(180deg);
+}
+
+/* Main Container */
+.main-container {
+  flex: 1;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+}
+@media (min-width: 768px) {
+  .main-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-js {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  background-color: #000;
+}
+
+/* Floating Controls over Video */
+.floating-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.float-btn {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.float-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.05);
+}
+.dark-theme .float-btn {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.dark-theme .float-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Canvas Container */
+.canvas-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#output-canvas {
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+}
+
+/* Controls & Settings Panel */
+.controls-panel {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+.dark-theme .controls-panel {
+  background-color: #202020;
+}
+
+/* Sub-sections in Controls Panel */
+.camera-select,
+.resolution-select,
+.performance-settings,
+.chroma-section,
+.background-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Labels and Inputs in the Controls Panel */
+.controls-panel label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.controls-panel select,
+.controls-panel input[type="color"],
+.controls-panel input[type="file"],
+.controls-panel input[type="range"] {
+  padding: 0.3rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  border: 1px solid #999;
+  background-color: #fefefe;
+  width: 100%;
+  max-width: 180px;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.dark-theme .controls-panel select,
+.dark-theme .controls-panel input[type="color"],
+.dark-theme .controls-panel input[type="file"],
+.dark-theme .controls-panel input[type="range"] {
+  background-color: #3a3a3a;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+/* Action Buttons */
+.action-btn {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  margin: 0.2rem 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.action-btn:hover {
+  background-color: #555;
+  transform: scale(1.03);
+}
+.dark-theme .action-btn {
+  background-color: #555;
+}
+.dark-theme .action-btn:hover {
+  background-color: #777;
+}
+
+/* Export Button */
+.export-btn {
+  background-color: #0066cc;
+}
+.export-btn:hover {
+  background-color: #004999;
+}
+.dark-theme .export-btn {
+  background-color: #008cff;
+}
+.dark-theme .export-btn:hover {
+  background-color: #006fbf;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+}
+.dark-theme .footer {
+  background-color: #202020;
+  border-color: #333;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .controls-panel {
+    flex-direction: column;
+  }
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
